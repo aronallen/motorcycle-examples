@@ -1,6 +1,6 @@
 Motorcycle.js Examples
 
-Browse and learn from examples of small Cycle.js apps using Core, DOM Driver, HTML Driver, HTTP Driver, JSONP Driver, and others.
+Browse and learn from examples of small Motorcycle.js apps.
 
 ## Usage
 
