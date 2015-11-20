@@ -1,5 +1,5 @@
 import {combine} from 'most';
-import {h} from '@motorcycle/dom';
+import {div, span, input} from '@motorcycle/dom';
 
 function labeledSlider({DOM, props$}, name = '') {
   let initialValue$ = props$.map(props => props.initial);
@@ -7,11 +7,11 @@ function labeledSlider({DOM, props$}, name = '') {
     .map(ev => ev.target.value);
   let value$ = initialValue$.concat(newValue$);
   let vtree$ = combine((props, value) =>
-    h(`div.labeled-slider${name}`, [
-      h('span.label', [
+    div(`.labeled-slider${name}`, [
+      span('.label', [
         props.label + ' ' + value + props.unit
       ]),
-      h('input.slider', {
+      input('.slider', {
         props: {
           type: 'range',
           min: props.min,

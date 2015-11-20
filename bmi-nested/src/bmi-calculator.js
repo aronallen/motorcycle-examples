@@ -1,6 +1,7 @@
 import {just, combine} from 'most'
-import {h} from '@motorcycle/dom';
-import labeledSlider from './labeled-slider';
+import isolate from '@cycle/isolate'
+import {div, h2} from '@motorcycle/dom';
+import LabeledSlider from './labeled-slider';
 
 function bmiCalculator({DOM}) {
   let weightProps$ = just({
@@ -9,8 +10,12 @@ function bmiCalculator({DOM}) {
   let heightProps$ = just({
     label: 'Height', unit: 'cm', min: 140, initial: 170, max: 210
   });
-  let weightSlider = labeledSlider({DOM, props$: weightProps$}, '.weight');
-  let heightSlider = labeledSlider({DOM, props$: heightProps$}, '.height');
+
+  let WeightSlider = isolate(LabeledSlider);
+  let HeightSlider = isolate(LabeledSlider);
+
+  let weightSlider = WeightSlider({DOM, props$: weightProps$}, '.weight');
+  let heightSlider = HeightSlider({DOM, props$: heightProps$}, '.height');
 
   let bmi$ = combine(
     (weight, height) => {
@@ -25,12 +30,12 @@ function bmiCalculator({DOM}) {
   return {
     DOM: bmi$.combine(
       (bmi, weightVTree, heightVTree) =>
-        h('div', [
+        div([
           weightVTree,
           heightVTree,
-          h('h2', 'BMI is ' + bmi)
-        ])
-      , weightSlider.DOM,
+          h2('BMI is ' + bmi)
+        ]),
+      weightSlider.DOM,
       heightSlider.DOM
     )
   };
