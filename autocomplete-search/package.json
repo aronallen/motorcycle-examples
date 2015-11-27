@@ -21,6 +21,7 @@
     "@cycle/isolate": "^1.1.1",
     "@motorcycle/core": "^0.1.7",
     "@motorcycle/dom": "^0.5.2",
+    "@motorcycle/jsonp" : "git@github.com:aronallen/motorcycle-jsonp-driver.git",
     "immutable": "^3.7.5",
     "most": "^0.16.0"
   }

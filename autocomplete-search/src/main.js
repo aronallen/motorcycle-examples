@@ -97,7 +97,7 @@ most.Stream.prototype.flatMapLatest = function flatMapLatest(f) {
 }
 
 most.Stream.prototype.withLatestFrom = function withLatestFrom(stream$, combinator) {
-  return this.combine(stream$).skipRepeatsWith(([x],[y]) => x === y).map((x,y) => combinator(x,y));
+  return this.combine(stream$).skipRepeatsWith(([x],[y]) => x === y).map(([x, y]) => combinator(x,y));
 }
 
 function intent(DOM) {
