@@ -92,8 +92,8 @@ most.Stream.prototype.notBetween = function notBetween(first, second) {
   )
 }
 
-most.Stream.prototype.flatMapLatest = function flatMapLatest(f) {
-  return this.map(f).switch();
+most.Stream.prototype.flatMapLatest = function flatMapLatest(mapFunction) {
+  return this.map(mapFunction).switch();
 }
 
 most.Stream.prototype.withLatestFrom = function withLatestFrom(stream$, combinator) {
