@@ -1,4 +1,3 @@
-/** @jsx hJSX */
 import {run} from '@motorcycle/core'
 import most from 'most'
 import {makeDOMDriver, h} from '@motorcycle/dom'
@@ -96,9 +95,11 @@ most.Stream.prototype.flatMapLatest = function flatMapLatest(mapFunction) {
   return this.map(mapFunction).switch();
 }
 
-most.Stream.prototype.withLatestFrom = function withLatestFrom(stream$, combinator) {
-  return this.combine(stream$).skipRepeatsWith(([x],[y]) => x === y).map(([x, y]) => combinator(x,y));
+most.Stream.prototype.withLatestFrom = function withLatestFrom(combinator, ...streams$) {
+  return this.sample(combinator, this, ...streams$);
 }
+
+
 
 function intent(DOM) {
   const UP_KEYCODE = 38
@@ -198,8 +199,9 @@ function model(suggestionsFromResponse$, actions) {
   const mod$ = modifications(actions)
 
   const state$ = suggestionsFromResponse$
-    .withLatestFrom(actions.wantsSuggestions$,
-      (suggestions, accepted) => accepted ? suggestions : []
+    .withLatestFrom(
+      (suggestions, accepted) => accepted ? suggestions : [],
+      actions.wantsSuggestions$
     )
     .startWith([])
     .map(suggestions => Immutable.Map(
@@ -270,14 +272,14 @@ const networking = {
 
 function preventedEvents(actions, state$) {
   return actions.keepFocusOnInput$
-    .withLatestFrom(state$, (event, state) => {
+    .withLatestFrom((event, state) => {
       if (state.get('suggestions').length > 0
       && state.get('highlighted') !== null) {
         return event
       } else {
         return null
       }
-    })
+    }, state$)
     .filter(ev => ev !== null)
 }
 
